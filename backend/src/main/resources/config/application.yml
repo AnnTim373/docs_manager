@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: docs
+  liquibase:
+    enabled: true
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/docs
+  jpa:
+    properties.hibernate.generate_statistics: false
+    hibernate:
+      ddl-auto: none
+
+liquibase.default.db.schema: "docs"
+
+logging:
+  level:
+    ROOT: INFO
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 60
+
+jhipster:
+  security:
+    authentication:
+      jwt:
+        secret: my-secret-token-to-change-in-production
+        token-validity-in-seconds: 86400
+
+server:
+  port: 8059
