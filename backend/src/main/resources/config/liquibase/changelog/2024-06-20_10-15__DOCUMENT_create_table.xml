@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="3" author="timofeeva">
+        <createSequence schemaName="docs" sequenceName="seq_document_id" startValue="4"/>
+        <createTable schemaName="docs" tableName="document" remarks="Документы">
+            <column name="id" defaultValueComputed="nextval('docs.seq_document_id')"
+                    type="bigint" remarks="Идентификатор документа">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="author_id" type="bigint" remarks="Идентификатор работника, создавшего поручения"/>
+            <column name="subject" type="varchar" remarks="Предмет поручения"/>
+            <column name="deadline" type="timestamp" remarks="Срок исполнения"/>
+            <column name="text" type="varchar" remarks="Текст поручения"/>
+            <column name="state" type="varchar" remarks="Состояние"/>
+        </createTable>
+        <addNotNullConstraint schemaName="docs" tableName="document" columnName="author_id"/>
+        <addNotNullConstraint schemaName="docs" tableName="document" columnName="subject"/>
+        <addNotNullConstraint schemaName="docs" tableName="document" columnName="text"/>
+        <addNotNullConstraint schemaName="docs" tableName="document" columnName="state"/>
+        <addForeignKeyConstraint baseTableSchemaName="docs"
+                                 baseTableName="document"
+                                 baseColumnNames="author_id"
+                                 constraintName="fk_doc_author_id"
+                                 referencedTableSchemaName="docs"
+                                 referencedTableName="employee"
+                                 referencedColumnNames="id"/>
+        <insert schemaName="docs" tableName="document">
+            <column name="id" value="1"/>
+            <column name="author_id" value="2"/>
+            <column name="subject" value="Новый функционал"/>
+            <column name="deadline" value="2024-07-12"/>
+            <column name="text" value="Необходимо добавить к приложению новый функционал"/>
+            <column name="state" value="Создано"/>
+        </insert>
+        <insert schemaName="docs" tableName="document">
+            <column name="id" value="2"/>
+            <column name="author_id" value="5"/>
+            <column name="subject" value="Отчет о доходах за год"/>
+            <column name="deadline" value="2024-12-31"/>
+            <column name="text" value="Необходимо создать отчет об общих годовых доходах"/>
+            <column name="state" value="Исполнение"/>
+        </insert>
+        <insert schemaName="docs" tableName="document">
+            <column name="id" value="3"/>
+            <column name="author_id" value="5"/>
+            <column name="subject" value="Анализ соответствия продукта требованиям заказчика"/>
+            <column name="deadline" value="2024-08-31"/>
+            <column name="text" value="Необходимо сопоставить реализованный функционал с документацией,
+            согласованной с заказчиком и предоставить полный отчет"/>
+            <column name="state" value="Доработка"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

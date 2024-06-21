@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="0" author="timofeeva">
+        <createSequence schemaName="docs" sequenceName="seq_organization_id" startValue="2"/>
+        <createTable schemaName="docs" tableName="organization" remarks="Данные организации">
+            <column name="id" defaultValueComputed="nextval('docs.seq_organization_id')"
+                    type="bigint" remarks="Идентификатор организации">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar" remarks="Название организации"/>
+            <column name="legal_address" type="varchar" remarks="Юридический адрес"/>
+            <column name="actual_address" type="varchar" remarks="Фактический адрес"/>
+            <column name="head_employee_id" type="bigint" remarks="Руководитель"/>
+        </createTable>
+        <addNotNullConstraint schemaName="docs" tableName="organization" columnName="name"/>
+        <addNotNullConstraint schemaName="docs" tableName="organization" columnName="legal_address"/>
+        <sql endDelimiter=";;">
+            create function docs.trigger_fct_tbi_org() returns trigger
+            security definer
+            language plpgsql
+            as
+            $$
+            BEGIN
+            NEW.ACTUAL_ADDRESS := NEW.LEGAL_ADDRESS;
+            RETURN NEW;
+            END
+            $$;;
+
+            create trigger tbi_org
+            before insert
+            on docs.organization
+            for each row
+            when (new.actual_address is null)
+            execute procedure docs.trigger_fct_tbi_org();;
+        </sql>
+        <insert schemaName="docs" tableName="organization">
+            <column name="id" value="1"/>
+            <column name="name" value="ООО &quot;Рога и копыта&quot;"/>
+            <column name="legal_address" value="РФ, г.Москва, ул.Свободы д.5 оф.327"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

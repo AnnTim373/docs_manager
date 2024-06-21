@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="7" author="timofeeva">
+        <addForeignKeyConstraint baseTableSchemaName="docs"
+                                 baseTableName="department"
+                                 baseColumnNames="head_employee_id"
+                                 constraintName="fk_dep_head_emp_id"
+                                 referencedTableSchemaName="docs"
+                                 referencedTableName="employee"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

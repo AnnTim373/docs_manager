@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2" author="timofeeva">
+        <createSequence schemaName="docs" sequenceName="seq_employee_id" startValue="6"/>
+        <createTable schemaName="docs" tableName="employee" remarks="Данные работников">
+            <column name="id" defaultValueComputed="nextval('docs.seq_employee_id')"
+                    type="bigint" remarks="Идентификатор работника">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="last_name" type="varchar" remarks="Фамилия"/>
+            <column name="first_name" type="varchar" remarks="Имя"/>
+            <column name="middle_name" type="varchar" remarks="Отчество"/>
+            <column name="position" type="varchar" remarks="Должность"/>
+            <column name="department_id" type="bigint" remarks="Идентификатор подразделения"/>
+        </createTable>
+        <addNotNullConstraint schemaName="docs" tableName="employee" columnName="last_name"/>
+        <addNotNullConstraint schemaName="docs" tableName="employee" columnName="first_name"/>
+        <addNotNullConstraint schemaName="docs" tableName="employee" columnName="position"/>
+        <addNotNullConstraint schemaName="docs" tableName="employee" columnName="department_id"/>
+        <addForeignKeyConstraint baseTableSchemaName="docs"
+                                 baseTableName="employee"
+                                 baseColumnNames="department_id"
+                                 constraintName="fk_emp_dep"
+                                 referencedTableSchemaName="docs"
+                                 referencedTableName="department"
+                                 referencedColumnNames="id"/>
+        <insert schemaName="docs" tableName="employee">
+            <column name="id" value="1"/>
+            <column name="last_name" value="Иванов"/>
+            <column name="first_name" value="Иван"/>
+            <column name="middle_name" value="Иванович"/>
+            <column name="position" value="Инженер-разработчик"/>
+            <column name="department_id" value="1"/>
+        </insert>
+        <insert schemaName="docs" tableName="employee">
+            <column name="id" value="2"/>
+            <column name="last_name" value="Петров"/>
+            <column name="first_name" value="Петр"/>
+            <column name="middle_name" value="Петрович"/>
+            <column name="position" value="Аналитик"/>
+            <column name="department_id" value="1"/>
+        </insert>
+        <insert schemaName="docs" tableName="employee">
+            <column name="id" value="3"/>
+            <column name="last_name" value="Сидоров"/>
+            <column name="first_name" value="Семен"/>
+            <column name="middle_name" value="Семенович"/>
+            <column name="position" value="Тестировщик"/>
+            <column name="department_id" value="1"/>
+        </insert>
+        <insert schemaName="docs" tableName="employee">
+            <column name="id" value="4"/>
+            <column name="last_name" value="Иванова"/>
+            <column name="first_name" value="Галина"/>
+            <column name="middle_name" value="Петровна"/>
+            <column name="position" value="Главный бухгалтер"/>
+            <column name="department_id" value="2"/>
+        </insert>
+        <insert schemaName="docs" tableName="employee">
+            <column name="id" value="5"/>
+            <column name="last_name" value="Смирнов"/>
+            <column name="first_name" value="Александр"/>
+            <column name="middle_name" value="Анатольевич"/>
+            <column name="position" value="Директор"/>
+            <column name="department_id" value="3"/>
+        </insert>
+        <sql>
+            update docs.organization set head_employee_id = 5 where id = 1;
+            update docs.department set head_employee_id = 1 where id = 1;
+            update docs.department set head_employee_id = 4 where id = 2;
+            update docs.department set head_employee_id = 5 where id = 3;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

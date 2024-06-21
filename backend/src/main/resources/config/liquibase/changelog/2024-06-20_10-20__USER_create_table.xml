@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="4" author="timofeeva">
+        <createSequence schemaName="docs" sequenceName="seq_user_id" startValue="6"/>
+        <createTable schemaName="docs" tableName="user" remarks="Учетные записи пользователей">
+            <column name="id" defaultValueComputed="nextval('docs.seq_user_id')"
+                    type="bigint" remarks="Идентификатор учетной записи">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="login" type="varchar" remarks="Логин"/>
+            <column name="password" type="varchar" remarks="Пароль"/>
+            <column name="employee_id" type="bigint" remarks="Идентификатор работника"/>
+        </createTable>
+        <addNotNullConstraint schemaName="docs" tableName="user" columnName="login"/>
+        <addNotNullConstraint schemaName="docs" tableName="user" columnName="password"/>
+        <addNotNullConstraint schemaName="docs" tableName="user" columnName="employee_id"/>
+        <addForeignKeyConstraint baseTableSchemaName="docs"
+                                 baseTableName="user"
+                                 baseColumnNames="employee_id"
+                                 constraintName="fk_user_emp_id"
+                                 referencedTableSchemaName="docs"
+                                 referencedTableName="employee"
+                                 referencedColumnNames="id"/>
+        <insert schemaName="docs" tableName="user">
+            <column name="id" value="1"/>
+            <column name="login" value="ivan123"/>
+            <column name="password" value="VIcMFUYg3V"/>
+            <column name="employee_id" value="1"/>
+        </insert>
+        <insert schemaName="docs" tableName="user">
+            <column name="id" value="2"/>
+            <column name="login" value="petr456"/>
+            <column name="password" value="F8JDGgawVZ"/>
+            <column name="employee_id" value="2"/>
+        </insert>
+        <insert schemaName="docs" tableName="user">
+            <column name="id" value="3"/>
+            <column name="login" value="semen789"/>
+            <column name="password" value="yT4M3bh2UV"/>
+            <column name="employee_id" value="3"/>
+        </insert>
+        <insert schemaName="docs" tableName="user">
+            <column name="id" value="4"/>
+            <column name="login" value="glbuhGalya"/>
+            <column name="password" value="JUZ6mnuZlb"/>
+            <column name="employee_id" value="4"/>
+        </insert>
+        <insert schemaName="docs" tableName="user">
+            <column name="id" value="5"/>
+            <column name="login" value="bigBoos"/>
+            <column name="password" value="JKYuLI50Eh"/>
+            <column name="employee_id" value="5"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

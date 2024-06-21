@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="5" author="timofeeva">
+        <createTable schemaName="docs" tableName="executor" remarks="Документы">
+            <column name="doc_id" type="bigint" remarks="Идентификатор документа"/>
+            <column name="executing_employee_id" type="bigint" remarks="Идентификатор исполнителя"/>
+        </createTable>
+        <addNotNullConstraint schemaName="docs" tableName="executor" columnName="doc_id"/>
+        <addNotNullConstraint schemaName="docs" tableName="executor" columnName="executing_employee_id"/>
+        <addPrimaryKey schemaName="docs" tableName="executor" columnNames="doc_id, executing_employee_id"/>
+        <addForeignKeyConstraint baseTableSchemaName="docs"
+                                 baseTableName="executor"
+                                 baseColumnNames="doc_id"
+                                 constraintName="fk_executor_doc_id"
+                                 referencedTableSchemaName="docs"
+                                 referencedTableName="document"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableSchemaName="docs"
+                                 baseTableName="executor"
+                                 baseColumnNames="executing_employee_id"
+                                 constraintName="fk_executor_ex_emp_id"
+                                 referencedTableSchemaName="docs"
+                                 referencedTableName="employee"
+                                 referencedColumnNames="id"/>
+        <insert schemaName="docs" tableName="executor">
+            <column name="doc_id" value="1"/>
+            <column name="executing_employee_id" value="1"/>
+        </insert>
+        <insert schemaName="docs" tableName="executor">
+            <column name="doc_id" value="2"/>
+            <column name="executing_employee_id" value="4"/>
+        </insert>
+        <insert schemaName="docs" tableName="executor">
+            <column name="doc_id" value="3"/>
+            <column name="executing_employee_id" value="1"/>
+        </insert>
+        <insert schemaName="docs" tableName="executor">
+            <column name="doc_id" value="3"/>
+            <column name="executing_employee_id" value="2"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

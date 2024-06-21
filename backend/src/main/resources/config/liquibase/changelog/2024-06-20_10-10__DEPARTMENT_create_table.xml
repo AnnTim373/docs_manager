@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="1" author="timofeeva">
+        <createSequence schemaName="docs" sequenceName="seq_department_id" startValue="4"/>
+        <createTable schemaName="docs" tableName="department" remarks="Подразделения">
+            <column name="id" defaultValueComputed="nextval('docs.seq_department_id')"
+                    type="bigint" remarks="Идентификатор подразделения">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar" remarks="Название"/>
+            <column name="contacts" type="varchar" remarks="Контактные данные"/>
+            <column name="head_employee_id" type="bigint" remarks="Руководитель"/>
+            <column name="organization_id" type="bigint" remarks="Идентификатор организации"/>
+        </createTable>
+        <addNotNullConstraint schemaName="docs" tableName="department" columnName="name"/>
+        <addNotNullConstraint schemaName="docs" tableName="department" columnName="organization_id"/>
+        <addForeignKeyConstraint baseTableSchemaName="docs"
+                                 baseTableName="department"
+                                 baseColumnNames="organization_id"
+                                 constraintName="fk_dep_org"
+                                 referencedTableSchemaName="docs"
+                                 referencedTableName="organization"
+                                 referencedColumnNames="id"/>
+        <insert schemaName="docs" tableName="department">
+            <column name="id" value="1"/>
+            <column name="name" value="Отдел разработки ПО"/>
+            <column name="contacts" value="it_dep@rnk.org"/>
+            <column name="organization_id" value="1"/>
+        </insert>
+        <insert schemaName="docs" tableName="department">
+            <column name="id" value="2"/>
+            <column name="name" value="Бухгалтерия"/>
+            <column name="contacts" value="accounting_dep@rnk.org"/>
+            <column name="organization_id" value="1"/>
+        </insert>
+        <insert schemaName="docs" tableName="department">
+            <column name="id" value="3"/>
+            <column name="name" value="Администрация"/>
+            <column name="contacts" value="big_boss@rnk.org"/>
+            <column name="organization_id" value="1"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
