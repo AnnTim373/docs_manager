@@ -19,7 +19,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(
         basePackages = "org.timofeeva.docs.repository",
-        entityManagerFactoryRef = "docsEntityManager",
+        entityManagerFactoryRef = "docsEntityManagerFactory",
         transactionManagerRef = "docsTransactionManager")
 @EnableTransactionManagement
 @Profile("!testing")
@@ -40,8 +40,8 @@ public class DatabaseConfiguration {
     }
 
     @Primary
-    @Bean(name = "docsEntityManager")
-    public LocalContainerEntityManagerFactoryBean docsEntityManager() {
+    @Bean(name = "docsEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean docsEntityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(docsDataSource());
@@ -59,7 +59,8 @@ public class DatabaseConfiguration {
     @Bean
     public PlatformTransactionManager docsTransactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(docsEntityManager().getObject());
+        transactionManager.setEntityManagerFactory(docsEntityManagerFactory().getObject());
         return transactionManager;
     }
+
 }

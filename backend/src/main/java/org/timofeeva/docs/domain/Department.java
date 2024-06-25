@@ -11,6 +11,13 @@ import java.util.List;
 public class Department {
 
     @Id
+    @SequenceGenerator(
+            name = "seq_department_id",
+            sequenceName = "seq_department_id",
+            schema = "docs",
+            allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_department_id")
     @Column(name = "id")
     private Long id;
 
@@ -18,7 +25,7 @@ public class Department {
     private String name;
 
     @Column(name = "contacts")
-    private String legalAddress;
+    private String contacts;
 
     @OneToOne
     @JoinColumn(name = "head_employee_id", referencedColumnName = "id")
