@@ -30,4 +30,9 @@ class DepartmentServiceImpl implements DepartmentService {
         repository.deleteById(id);
     }
 
+    @Override
+    public boolean existById(Long id) {
+        return repository.existsById(id);
+    }
+
 }

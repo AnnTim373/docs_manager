@@ -10,6 +10,10 @@ public interface DocumentFacade {
 
     Page<DocumentView> findDocumentList(Predicate predicate, Pageable pageable);
 
+    Page<DocumentView> findMyDocumentList(String login, Pageable pageable);
+
+    Page<DocumentView> findMyExecutingDocumentList(String login, Pageable pageable);
+
     Long saveDocument(DocumentDTO dto);
 
     void deleteDocument(Long id);

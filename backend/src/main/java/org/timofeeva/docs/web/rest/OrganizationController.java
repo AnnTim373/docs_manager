@@ -1,6 +1,9 @@
 package org.timofeeva.docs.web.rest;
 
 import com.querydsl.core.types.Predicate;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,6 +23,7 @@ import org.timofeeva.docs.util.MyBinderCustomizer;
 import javax.validation.Valid;
 
 @Slf4j
+@Tag(name = "Операции с организациями")
 @RestController
 @RequestMapping(value = "/organization")
 @RequiredArgsConstructor
@@ -30,16 +34,21 @@ public class OrganizationController {
     private final OrganizationFacade facade;
 
     @GetMapping
+    @Operation(description = "Получение списка организаций (поиск)")
     public Page<OrganizationView> getOrganizations(
+            @Parameter(description = "Предикаты для поиска")
             @QuerydslPredicate(root = Organization.class, bindings = MyBinderCustomizer.class) Predicate predicate,
             Pageable pageable
     ) {
+        log.info("Enter getOrganizations with: {}", predicate);
         return facade.findOrganizationList(predicate, pageable);
     }
 
     @PostMapping
+    @Operation(description = "Добавление/изменение организации")
     public ResponseEntity<SuccessResponse> saveOrganization(@RequestBody @Valid OrganizationDTO dto,
                                                             NativeWebRequest request) {
+        log.info("Enter saveOrganization with: {}", dto);
         return ResponseEntity.ok(
                 SuccessResponse.builder()
                         .id(facade.saveOrganization(dto))
@@ -50,8 +59,11 @@ public class OrganizationController {
         );
     }
 
-    @DeleteMapping
-    public ResponseEntity<SuccessResponse> deleteOrganization(@RequestParam Long id, NativeWebRequest request) {
+    @DeleteMapping("/{id}")
+    @Operation(description = "Удаление организации")
+    public ResponseEntity<SuccessResponse> deleteOrganization(@Parameter(description = "Идентификатор организации")
+                                                              @PathVariable Long id, NativeWebRequest request) {
+        log.info("Enter deleteOrganization with: {}", id);
         facade.deleteOrganization(id);
         return ResponseEntity.ok(
                 SuccessResponse.builder()

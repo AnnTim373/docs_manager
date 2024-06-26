@@ -30,4 +30,9 @@ class EmployeeServiceImpl implements EmployeeService {
         repository.deleteById(id);
     }
 
+    @Override
+    public boolean existById(Long id) {
+        return repository.existsById(id);
+    }
+
 }

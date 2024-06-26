@@ -15,4 +15,6 @@ public interface DepartmentService {
 
     void delete(Long id);
 
+    boolean existById(Long id);
+
 }

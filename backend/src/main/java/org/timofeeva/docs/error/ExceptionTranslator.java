@@ -24,6 +24,8 @@ public class ExceptionTranslator {
     public ResponseEntity<DocsProblem> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException ex, NativeWebRequest request
     ) {
+        log.error(ex.getMessage());
+        log.error(Arrays.toString(ex.getStackTrace()));
         String errorText = ex.getFieldErrors().stream().map(fieldError -> {
             String field = fieldError.getField();
             String error = fieldError.getDefaultMessage();
@@ -31,6 +33,21 @@ public class ExceptionTranslator {
             return messageService.getLocalizedMessageWithArgs(error, new Object[]{field}, request);
         }).collect(Collectors.joining("; "));
         DocsProblem problem = new DocsProblem(errorText);
+        return ResponseEntity.badRequest().body(problem);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<DocsProblem> handleNotFoundException(
+            NotFoundException ex, NativeWebRequest request
+    ) {
+        log.error(ex.getMessage());
+        log.error(Arrays.toString(ex.getStackTrace()));
+        DocsProblem problem = new DocsProblem(
+                messageService.getLocalizedMessageWithArgs(
+                        "validation.reference.default", new Object[]{ex.getField()}, request
+                )
+        );
+
         return ResponseEntity.badRequest().body(problem);
     }
 

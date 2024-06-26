@@ -29,4 +29,20 @@ public class DocumentServiceImpl implements DocumentService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public boolean existById(Long id) {
+        return repository.existsById(id);
+    }
+
+    @Override
+    public Page<Document> findAllByAuthor(Pageable pageable, Long authorId) {
+        return repository.findAllByAuthorId(authorId, pageable);
+    }
+
+    @Override
+    public Page<Document> findAllByExecutor(Pageable pageable, Long executorId) {
+        return repository.findAllByExecutorId(executorId, pageable);
+    }
+
 }

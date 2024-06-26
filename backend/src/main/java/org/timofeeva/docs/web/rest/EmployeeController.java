@@ -1,6 +1,9 @@
 package org.timofeeva.docs.web.rest;
 
 import com.querydsl.core.types.Predicate;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +25,7 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequestMapping(value = "/employee")
+@Tag(name = "Операции с сотрудниками")
 @RequiredArgsConstructor
 public class EmployeeController {
 
@@ -30,16 +34,21 @@ public class EmployeeController {
     private final EmployeeFacade facade;
 
     @GetMapping
+    @Operation(description = "Получение списка сотрудников (поиск)")
     public Page<EmployeeView> getEmployees(
+            @Parameter(description = "Предикаты для поиска")
             @QuerydslPredicate(root = Employee.class, bindings = MyBinderCustomizer.class) Predicate predicate,
             Pageable pageable
     ) {
+        log.info("Enter getEmployees with: {}", predicate);
         return facade.findEmployeeList(predicate, pageable);
     }
 
     @PostMapping
+    @Operation(description = "Создание/изменение сотрудника")
     public ResponseEntity<SuccessResponse> saveEmployee(@RequestBody @Valid EmployeeDTO dto,
                                                         NativeWebRequest request) {
+        log.info("Enter saveEmployee with: {}", dto);
         return ResponseEntity.ok(
                 SuccessResponse.builder()
                         .id(facade.saveEmployee(dto))
@@ -50,8 +59,11 @@ public class EmployeeController {
         );
     }
 
-    @DeleteMapping
-    public ResponseEntity<SuccessResponse> deleteEmployee(@RequestParam Long id, NativeWebRequest request) {
+    @DeleteMapping("/{id}")
+    @Operation(description = "Удаление сотрудника")
+    public ResponseEntity<SuccessResponse> deleteEmployee(@Parameter(description = "Идентификатор сотрудника")
+                                                          @PathVariable Long id, NativeWebRequest request) {
+        log.info("Enter deleteEmployee with: {}", id);
         facade.deleteEmployee(id);
         return ResponseEntity.ok(
                 SuccessResponse.builder()

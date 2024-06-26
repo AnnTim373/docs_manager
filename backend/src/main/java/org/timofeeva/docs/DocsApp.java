@@ -15,9 +15,12 @@ public class DocsApp {
         Environment env = context.getEnvironment();
         log.info("\n----------------------------------------------------------\n\t" +
                         "Application '{}' is running!.\n\tAccess URLs:\n\t" +
-                        "Local: \t\thttp://localhost:{}\n" +
+                        "Local: \t\thttp://localhost:{}\n\t" +
+                        "Swagger: \thttp://localhost:{}/swagger-ui.html\n\t" +
                         "----------------------------------------------------------",
                 env.getProperty("spring.application.name"),
-                env.getProperty("server.port"));
+                env.getProperty("server.port"),
+                env.getProperty("server.port")
+        );
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.timofeeva.docs.dto.DepartmentDTO;
 import org.timofeeva.docs.dto.DepartmentView;
+import org.timofeeva.docs.error.NotFoundException;
 import org.timofeeva.docs.facade.DepartmentFacade;
 import org.timofeeva.docs.mapper.DepartmentMapper;
 import org.timofeeva.docs.service.DepartmentService;
@@ -30,7 +31,9 @@ class DepartmentFacadeImpl implements DepartmentFacade {
 
     @Override
     public void deleteDepartment(Long id) {
-        service.delete(id);
+        if (service.existById(id)) {
+            service.delete(id);
+        } else throw new NotFoundException("id");
     }
 
 }

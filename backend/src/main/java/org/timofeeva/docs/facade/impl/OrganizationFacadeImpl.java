@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.timofeeva.docs.dto.OrganizationDTO;
 import org.timofeeva.docs.dto.OrganizationView;
+import org.timofeeva.docs.error.NotFoundException;
 import org.timofeeva.docs.facade.OrganizationFacade;
 import org.timofeeva.docs.mapper.OrganizationMapper;
 import org.timofeeva.docs.service.OrganizationService;
@@ -30,7 +31,9 @@ class OrganizationFacadeImpl implements OrganizationFacade {
 
     @Override
     public void deleteOrganization(Long id) {
-        service.delete(id);
+        if (service.existById(id)) {
+            service.delete(id);
+        } else throw new NotFoundException("id");
     }
 
 }

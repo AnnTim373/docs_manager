@@ -15,4 +15,6 @@ public interface EmployeeService {
 
     void delete(Long id);
 
+    boolean existById(Long id);
+
 }

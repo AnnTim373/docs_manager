@@ -16,6 +16,8 @@
         <start-class>org.timofeeva.docs.DocsApp</start-class>
         <lombok.version>1.18.22</lombok.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <swagger-anotations.version>2.1.12</swagger-anotations.version>
+        <swagger-parser.version>2.0.29</swagger-parser.version>
         <postgres.version>42.3.2</postgres.version>
         <hikari.version>4.0.3</hikari.version>
         <maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
@@ -122,6 +124,22 @@
             <artifactId>querydsl-jpa</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-anotations.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.parser.v3</groupId>
+            <artifactId>swagger-parser</artifactId>
+            <version>${swagger-parser.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -218,6 +236,24 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                <version>1.3</version>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <apiDocsUrl>/api-docs</apiDocsUrl>
+                    <outputFileName>openapi.yaml</outputFileName>
+                    <outputDir>${project.build.directory}</outputDir>
+                </configuration>
             </plugin>
         </plugins>
     </build>
