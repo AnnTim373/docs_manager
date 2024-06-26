@@ -3,7 +3,7 @@ package org.timofeeva.docs.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -11,6 +11,13 @@ import java.util.List;
 public class Organization {
 
     @Id
+    @SequenceGenerator(
+            name = "seq_organization_id",
+            sequenceName = "seq_organization_id",
+            schema = "docs",
+            allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_organization_id")
     @Column(name = "id")
     private Long id;
 
@@ -27,8 +34,8 @@ public class Organization {
     @JoinColumn(name = "head_employee_id", referencedColumnName = "id")
     private Employee headEmployee;
 
-    @OneToMany(mappedBy = "organization")
-    private List<Department> departments;
-
+    @OneToMany
+    @JoinColumn(name = "organization_id", referencedColumnName = "id")
+    private Set<Department> departments;
 
 }

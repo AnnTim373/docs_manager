@@ -9,11 +9,11 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.timofeeva.docs.domain.Department;
-import org.timofeeva.docs.dto.DepartmentDTO;
-import org.timofeeva.docs.dto.DepartmentView;
+import org.timofeeva.docs.domain.Organization;
+import org.timofeeva.docs.dto.OrganizationDTO;
+import org.timofeeva.docs.dto.OrganizationView;
 import org.timofeeva.docs.dto.response.SuccessResponse;
-import org.timofeeva.docs.facade.DepartmentFacade;
+import org.timofeeva.docs.facade.OrganizationFacade;
 import org.timofeeva.docs.service.LocalizedMessageService;
 import org.timofeeva.docs.util.MyBinderCustomizer;
 
@@ -21,28 +21,28 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/department")
+@RequestMapping(value = "/organization")
 @RequiredArgsConstructor
-public class DepartmentController {
+public class OrganizationController {
 
     private final LocalizedMessageService messageService;
 
-    private final DepartmentFacade facade;
+    private final OrganizationFacade facade;
 
     @GetMapping
-    public Page<DepartmentView> getDepartments(
-            @QuerydslPredicate(root = Department.class, bindings = MyBinderCustomizer.class) Predicate predicate,
+    public Page<OrganizationView> getOrganizations(
+            @QuerydslPredicate(root = Organization.class, bindings = MyBinderCustomizer.class) Predicate predicate,
             Pageable pageable
     ) {
-        return facade.findDepartmentList(predicate, pageable);
+        return facade.findOrganizationList(predicate, pageable);
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponse> saveDepartment(@RequestBody @Valid DepartmentDTO dto,
-                                                          NativeWebRequest request) {
+    public ResponseEntity<SuccessResponse> saveOrganization(@RequestBody @Valid OrganizationDTO dto,
+                                                            NativeWebRequest request) {
         return ResponseEntity.ok(
                 SuccessResponse.builder()
-                        .id(facade.saveDepartment(dto))
+                        .id(facade.saveOrganization(dto))
                         .result(messageService.getLocalizedMessage(
                                 "response.create.success",
                                 request))
@@ -51,8 +51,8 @@ public class DepartmentController {
     }
 
     @DeleteMapping
-    public ResponseEntity<SuccessResponse> deleteDepartment(@RequestParam Long id, NativeWebRequest request) {
-        facade.deleteDepartment(id);
+    public ResponseEntity<SuccessResponse> deleteOrganization(@RequestParam Long id, NativeWebRequest request) {
+        facade.deleteOrganization(id);
         return ResponseEntity.ok(
                 SuccessResponse.builder()
                         .id(id)

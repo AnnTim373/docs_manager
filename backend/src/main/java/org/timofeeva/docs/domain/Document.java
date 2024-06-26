@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -12,6 +12,13 @@ import java.util.List;
 public class Document {
 
     @Id
+    @SequenceGenerator(
+            name = "seq_document_id",
+            sequenceName = "seq_document_id",
+            schema = "docs",
+            allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_document_id")
     @Column(name = "id")
     private Long id;
 
@@ -22,7 +29,11 @@ public class Document {
             joinColumns = @JoinColumn(name = "doc_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "executing_employee_id", referencedColumnName = "id")
     )
-    private List<Employee> author;
+    private Set<Employee> executor;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    private Employee author;
 
     @Column(name = "subject")
     private String subject;

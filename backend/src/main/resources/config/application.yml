@@ -18,6 +18,9 @@ liquibase.default.db.schema: "docs"
 logging:
   level:
     ROOT: INFO
+    org.hibernate:
+      SQL: DEBUG
+      type.descriptor.sql.BasicBinder: TRACE
   logback:
     rollingpolicy:
       max-file-size: 10MB

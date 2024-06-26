@@ -3,7 +3,7 @@ package org.timofeeva.docs.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -31,11 +31,11 @@ public class Department {
     @JoinColumn(name = "head_employee_id", referencedColumnName = "id")
     private Employee headEmployee;
 
-    @ManyToOne
-    @JoinColumn(name = "organization_id", referencedColumnName = "id")
-    private Organization organization;
+    @OneToMany
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
+    private Set<Employee> employees;
 
-    @OneToMany(mappedBy = "department")
-    private List<Employee> employees;
+    @Column(name = "organization_id")
+    private Long organizationId;
 
 }

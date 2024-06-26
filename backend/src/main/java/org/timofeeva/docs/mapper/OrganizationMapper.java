@@ -1,20 +1,27 @@
 package org.timofeeva.docs.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.timofeeva.docs.domain.Organization;
+import org.timofeeva.docs.dto.OrganizationDTO;
+import org.timofeeva.docs.dto.OrganizationView;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {EmployeeMapper.class})
 public interface OrganizationMapper {
 
-    default Long toLong(Organization organization) {
-        return organization.getId();
-    }
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "legalAddress", source = "legalAddress")
+    @Mapping(target = "headEmployee", source = "headEmployee")
+    @Mapping(target = "actualAddress", source = "actualAddress")
+    @Mapping(target = "departments", source = "departments")
+    OrganizationView toView(Organization organization);
 
-    default Organization fromLong(Long id) {
-        if (id == null) return null;
-        Organization organization = new Organization();
-        organization.setId(id);
-        return organization;
-    }
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "legalAddress", source = "legalAddress")
+    @Mapping(target = "headEmployee", source = "headEmployee")
+    @Mapping(target = "actualAddress", source = "actualAddress")
+    Organization fromDTO(OrganizationDTO dto);
 
 }
